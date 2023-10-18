@@ -3,6 +3,7 @@ import numpy as np
 import pytesseract
 
 
+# noinspection PyPackageRequirements
 async def crop_killer(file_binary_code):
     pixel_matrix = np.frombuffer(file_binary_code, dtype=np.uint8)
 
