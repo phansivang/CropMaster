@@ -3,7 +3,7 @@ from crop_killer import crop_killer
 import os
 import asyncio
 
-bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
+bot = telebot.TeleBot(os.environ.get('TELEGRAM_TOKEN'))
 
 
 @bot.message_handler(content_types=['photo'])
@@ -11,9 +11,6 @@ def main(message):
     get_file_path = bot.get_file(message.photo[-1].file_id).file_path  # get file path from telegram bot
 
     read_file_as_encode = bot.download_file(get_file_path)  # encode file by using file path above
-
-    # is_image_valid = asyncio.run(is_transaction_image(read_file_as_encode))
-    # print(is_image_valid)
 
     username = f'{message.from_user.first_name} {message.from_user.last_name or ""}'
     user_message_mention = (message.reply_to_message.text or '') if message.reply_to_message else ''
