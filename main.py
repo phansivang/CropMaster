@@ -20,10 +20,17 @@ def main(message):
     if len(encoded_image):
         bot.delete_message(message.chat.id, message.message_id)  # delete the old recept
 
-        bot.send_photo(message.chat.id, encoded_image,
-                       str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(f'({username})'), disable_notification=True)
-    # else:
-    #     bot.send_message(message.chat.id, 'THIS IS NOT A TRANSACTION RECEIPT !')
+        send_messages = str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(
+            f'({username})')
+
+        # use try and except to avoid error if reply_to_message key doesn't exist in message object
+        try:
+            reply_to = message.reply_to_message.message_id
+
+            bot.send_photo(message.chat.id, encoded_image, send_messages, reply_to_message_id=reply_to, disable_notification=True)
+
+        except:
+            bot.send_photo(message.chat.id, encoded_image, send_messages, disable_notification=True)
 
 
 if __name__ == "__main__":
