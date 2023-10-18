@@ -36,7 +36,7 @@ async def crop_killer(file_binary_code):
     text = pytesseract.image_to_string(cropped_image).upper()
     print({'detail': text})
 
-    keywords = ['USD', 'MAO RITH', 'ABA', 'GO TO ACCOUNTS', 'DONE', '000 354 079']
+    keywords = ['USD', 'MAO RITH', 'RITH MAO', 'ABA', 'GO TO ACCOUNTS', 'DONE', '000 354 079']
 
     if any(keyword in text for keyword in keywords):
         amount_paid = None
