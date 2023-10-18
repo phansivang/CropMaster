@@ -21,8 +21,7 @@ def main(message):
         bot.delete_message(message.chat.id, message.message_id)  # delete the old recept
 
         bot.send_photo(message.chat.id, encoded_image,
-                       str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(
-                           f'({username})'))
+                       str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(f'({username})'), disable_notification=True)
     # else:
     #     bot.send_message(message.chat.id, 'THIS IS NOT A TRANSACTION RECEIPT !')
 
