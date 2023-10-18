@@ -20,9 +20,11 @@ def main(message):
     if len(encoded_image):
         bot.delete_message(message.chat.id, message.message_id)  # delete the old recept
 
-        bot.send_photo(message.chat.id, encoded_image, str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(f'({username})'))
-    else:
-        bot.send_message(message.chat.id, 'THIS IS NOT A TRANSACTION RECEIPT !')
+        bot.send_photo(message.chat.id, encoded_image,
+                       str(message.caption or user_message_mention) + '|' + f'{str(amount_paid)} USD' + ' ' + str(
+                           f'({username})'))
+    # else:
+    #     bot.send_message(message.chat.id, 'THIS IS NOT A TRANSACTION RECEIPT !')
 
 
 if __name__ == "__main__":
