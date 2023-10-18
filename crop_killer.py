@@ -39,6 +39,8 @@ async def crop_killer(file_binary_code):
     if any(keyword in text for keyword in keywords):
         amount_paid = text.split('USD')[0].split('-')[1]
 
+        print({ 'user_transaction': amount_paid })
+
         _, encoded_image = cv2.imencode('.jpg', cropped_image)
 
         return encoded_image, amount_paid
