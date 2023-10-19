@@ -35,7 +35,7 @@ async def crop_killer(file_binary_code):
     cropped_image = image[y:y + h, x:x + w]
 
     text = pytesseract.image_to_string(cropped_image).upper()
-    print({'detail': text})
+    # print({'detail': text})
 
     keywords = ['USD', 'MAO RITH', 'RITH MAO', 'ABA', 'GO TO ACCOUNTS', 'DONE', '000 354 079']
 
@@ -46,7 +46,7 @@ async def crop_killer(file_binary_code):
         if 'USP' in text:
             amount_paid = text.split('USP')[0].split('-')[1]
 
-        print({'user_transaction': amount_paid})
+        # print({'user_transaction': amount_paid})
 
         _, encoded_image = cv2.imencode('.jpg', cropped_image)
 
