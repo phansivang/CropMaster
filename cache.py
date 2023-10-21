@@ -19,6 +19,5 @@ def save(key, new_message):
         r.set(key, new_message, ex=expiration_time)
         return 'DONE'
 
-
 def get(key):
     return r.get(key)

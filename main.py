@@ -30,7 +30,8 @@ def main(message):
         # use try and except to avoid error if there is no message id
         try:
             reply_to_message_id = message_id
-            bot.send_photo(message.chat.id, encoded_image, send_messages, reply_to_message_id=reply_to_message_id, disable_notification=True)
+            bot.send_photo(message.chat.id, encoded_image, send_messages, reply_to_message_id=reply_to_message_id,
+                           disable_notification=True)
 
         except:
             bot.send_photo(message.chat.id, encoded_image, send_messages, disable_notification=True)
@@ -41,18 +42,20 @@ def listen_user_order(message):
     user_id = message.from_user.id
     text = str(message.text)
 
-    pattern_format = r'^(?:\d+\s*\+\s*rice)|(?:rice\s*\+\s*\d+)$'
-    pattern_rice = r'^rice$'
-    pattern_number = r'^(?:[1-9]|1[0-5])$'
-    pattern_rice_and_number = r'\d+\s*\+\s*\d+'
+    patterns = [
+        r'^(?:\d+\s*\+\s*rice)|(?:rice\s*\+\s*\d+)$',
+        r'^rice$',
+        r'^(?:[1-9]|1[0-5])$',
+        r'\d+\s*\+\s*\d+',
+        r'rice\s*x\s*[1-9]|1[0-5]',
+        r'^rice\s*$',
+    ]
 
-    match_rice_and_number = re.match(pattern_rice_and_number, text)
-    match_format = re.match(pattern_format, text)
-    match_rice = re.match(pattern_rice, text)
-    match_number = re.match(pattern_number, text)
-
-    if match_format or match_rice or match_number or match_rice_and_number:
-        save(user_id, str(message.id) + ':' + text)
+    for pattern in patterns:
+        match = re.match(pattern, text)
+        if match:
+            save(user_id, str(message.id) + ':' + text)
+            break
 
 
 if __name__ == "__main__":
