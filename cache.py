@@ -1,3 +1,5 @@
+import datetime
+
 import redis
 import os
 
@@ -9,16 +11,16 @@ r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, username="default", password=R
 
 
 def save(key, new_message):
-    expiration_time = os.environ.get('REDIS_EXPIRATION')  # 3hour
+    hour = int(os.environ.get('REDIS_EXPIRATION'))
+    expiration_time = datetime.timedelta(hours=hour)
 
     check_data = r.get(key)
     if check_data:
         [_, old_order_message] = check_data.decode().split(':')
-        r.set(key, str(new_message) + '|' + str(old_order_message))
+        r.set(key, str(new_message) + '|' + str(old_order_message), ex=expiration_time)
     else:
-        r.set(key, new_message)
-        r.expireat(key, expiration_time)
-        return 'DONE'
+        r.set(key, new_message, ex=expiration_time)
+
 
 def get(key):
     return r.get(key)
