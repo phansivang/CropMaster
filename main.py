@@ -5,12 +5,11 @@ import re
 import asyncio
 from cache import save, get
 
-bot = telebot.TeleBot('6334543919:AAHqXVSBctgo7GqFBuQDdg4w3x43R778Ljc')
+bot = telebot.TeleBot(os.environ.get('TELEGRAM_TOKEN'))
 
 
 @bot.message_handler(content_types=['photo'])
 def main(message):
-    print(message)
     get_file_path = bot.get_file(message.photo[-1].file_id).file_path  # get file path from telegram bot
 
     read_file_as_encode = bot.download_file(get_file_path)  # encode file by using file path above
@@ -34,8 +33,7 @@ def main(message):
         # use try and except to avoid error if there is no message id
         try:
             reply_to_message_id = message_id
-            bot.send_photo(message.chat.id, encoded_image, send_messages, reply_to_message_id=reply_to_message_id,
-                           disable_notification=True)
+            bot.send_photo(message.chat.id, encoded_image, send_messages, reply_to_message_id=reply_to_message_id,disable_notification=True)
 
         except:
             bot.send_photo(message.chat.id, encoded_image, send_messages, disable_notification=True)
