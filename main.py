@@ -5,17 +5,18 @@ import re
 import asyncio
 from cache import save, get
 
-bot = telebot.TeleBot(os.environ.get('TELEGRAM_TOKEN'))
+bot = telebot.TeleBot('6334543919:AAHqXVSBctgo7GqFBuQDdg4w3x43R778Ljc')
 
 
 @bot.message_handler(content_types=['photo'])
 def main(message):
+    print(message)
     get_file_path = bot.get_file(message.photo[-1].file_id).file_path  # get file path from telegram bot
 
     read_file_as_encode = bot.download_file(get_file_path)  # encode file by using file path above
 
     username = f'{message.from_user.first_name} {message.from_user.last_name or ""}'
-    # user_message_mention = (message.reply_to_message.text or '') if message.reply_to_message else ''
+    user_caption = message.caption or ''
 
     encoded_image, amount_paid = asyncio.run(crop_killer(read_file_as_encode))
 
@@ -25,7 +26,10 @@ def main(message):
         get_user_order_history = get(message.from_user.id) or b':'
         [message_id, user_order] = get_user_order_history.decode().split(':')
 
-        send_messages = user_order + '|' + f'{str(amount_paid)} USD' + ' ' + str(f'({username})')
+        if user_caption:
+            send_messages = user_caption + '|' + user_order + '|' + f'{str(amount_paid)}$' + ' ' + str(f'({username})')
+        else:
+            send_messages = user_order + '|' + f'{str(amount_paid)}$' + ' ' + str(f'({username})')
 
         # use try and except to avoid error if there is no message id
         try:
